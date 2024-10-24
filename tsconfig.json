@@ -1,0 +1,25 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.vitest.json"
+    }
+  ],
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": false,
+    "noEmit": false
+    // "checkJs": false
+    // "checkJs": true, // Opcional: habilita a verificação de erros em arquivos .js
+    // "outDir": "./dist", // Opcional: define o diretório de saída para os arquivos compilados
+    // "noEmit": false, // Impede a emissão de arquivos, se necessário apenas para checagem
+    // "strict": true, // Mantém as regras estritas de TypeScript
+    // "target": "es6" // Alvo da compilação, pode ser ajustado conforme necessário
+  }
+}
