@@ -23,9 +23,9 @@ const search = ref('')
 const filteredProductsByCategory = computed<IProdByCat[]>(() => {
   return productsByCategory.value.reduce((acc: IProdByCat[], category) => {
     // Filtra os produtos que correspondem à busca
-    const matchingProducts = category.products.filter(product =>
-      product.name?.toLowerCase().includes(search.value)
-    );
+    const matchingProducts = category.products.filter((product) =>
+      product.name?.toLowerCase().includes(search.value.toLowerCase())
+    )
 
     // Se a categoria tiver produtos correspondentes, a adiciona ao acumulador
     if (matchingProducts.length > 0) {
@@ -35,13 +35,12 @@ const filteredProductsByCategory = computed<IProdByCat[]>(() => {
           ...category,
           products: matchingProducts // Inclui apenas produtos correspondentes
         }
-      ];
+      ]
     }
 
-    return acc; // Se não houver correspondência, retorna o acumulador sem alterações
-  }, []);
-});
-
+    return acc // Se não houver correspondência, retorna o acumulador sem alterações
+  }, [])
+})
 
 onMounted(async () => {
   try {
@@ -103,7 +102,7 @@ const scrollToCategory = (categoryId: any) => {
   </div>
 
   <div class="content card menu-container rounded-t-3xl">
-    <p class="mb-2 text-2xl" :class="{'animate-pulse' : !loaded}">Categorias</p>
+    <p class="mb-2 text-2xl" :class="{ 'animate-pulse': !loaded }">Categorias</p>
     <template v-if="loaded">
       <div
         ref="__categories"
@@ -122,7 +121,11 @@ const scrollToCategory = (categoryId: any) => {
         </template>
       </div>
 
-      <div class="products mb-8 mt-2" v-for="category in filteredProductsByCategory" :key="category.id">
+      <div
+        class="products mb-8 mt-2"
+        v-for="category in filteredProductsByCategory"
+        :key="category.id"
+      >
         <p :id="category.id.toString()" class="mb-4 text-2xl font-semibold">{{ category.name }}</p>
         <div class="cards-container flex flex-row flex-wrap gap-4">
           <template v-for="product in category.products" :key="product.id">
@@ -130,7 +133,13 @@ const scrollToCategory = (categoryId: any) => {
           </template>
         </div>
       </div>
-      <p v-if="!filteredProductsByCategory.length">Não encontramos produtos</p>
+      <div
+        v-if="!filteredProductsByCategory.length"
+        class="not-found flex flex-col items-center gap-4"
+      >
+        <p>Não encontramos produtos, pesquise novamente ...</p>
+        <i class="pi pi-spin pi-compass" style="font-size: 1.5rem"></i>
+      </div>
     </template>
     <template v-else>
       <Skeleton class="mt-4 mb-4" height="37px"></Skeleton>
@@ -141,13 +150,21 @@ const scrollToCategory = (categoryId: any) => {
   </div>
   <div class="filter z-10 fixed bottom-0 p-2 w-full">
     <IconField iconPosition="left">
-        <InputText type="text" v-model="search" placeholder="Pesquisar..."  class="w-full glass" />
-        <InputIcon class="pi pi-search" />
+      <InputText
+        type="text"
+        v-model="search"
+        placeholder="Pesquisar..."
+        class="w-full glass caret-pink-500"
+      />
+      <Transition mode="out-in">
+        <InputIcon v-if="!search.length" class="pi pi-search" />
+        <InputIcon v-else class="pi pi-times" @click="search = ''" />
+      </Transition>
     </IconField>
   </div>
   <ScrollTop
     :threshold="1000"
-    icon="pi pi-arrow-up"
+    icon="pi pi-chevron-up"
     :buttonProps="{ severity: 'contrast', raised: true, rounded: true }"
   />
 </template>
@@ -197,8 +214,7 @@ const scrollToCategory = (categoryId: any) => {
   background: var(--surface-ground);
   z-index: 1;
   position: relative;
-  padding: 20px;
-  padding: 1.2rem;
+  padding: 1.2rem 1.2rem 0;
   margin-top: -1.5rem;
 
   .categories {
@@ -234,5 +250,9 @@ const scrollToCategory = (categoryId: any) => {
   -webkit-backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   outline: none;
+}
+
+.p-scrolltop {
+  bottom: 50px !important;
 }
 </style>
