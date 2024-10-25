@@ -159,7 +159,7 @@ const scrollToCategory = (categoryId: any) => {
         type="text"
         v-model="search"
         placeholder="Pesquisar..."
-        class="w-full glass caret-pink-500"
+        class="w-full glass"
       />
       <Transition mode="out-in">
         <InputIcon v-if="!search.length" class="pi pi-search" />
