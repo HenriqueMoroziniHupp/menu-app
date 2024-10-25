@@ -94,7 +94,12 @@ const scrollToCategory = (categoryId: any) => {
 
 <template>
   <div id="parallax" class="parallax-container">
-    <ImageComponent image-class="parallax-image" :image-url="userStore.userData.bannerUrl" />
+    <template v-if="loaded">
+      <ImageComponent image-class="parallax-image" :image-url="userStore.userData.bannerUrl" />
+    </template>
+    <template v-else>
+      <Skeleton width="100%" height="100%"></Skeleton>
+    </template>
     <div class="restaurant-name">
       <p class="text-3xl">{{ userStore.userData.name }}</p>
       <p class="text-sm">{{ userStore.userData.description }}</p>
