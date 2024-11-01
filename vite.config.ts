@@ -5,6 +5,7 @@ import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import { PrimeVueResolver } from '@primevue/auto-import-resolver'
 import Components from 'unplugin-vue-components/vite'
+import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -13,6 +14,15 @@ export default defineConfig({
     vueDevTools(),
     Components({
       resolvers: [PrimeVueResolver()]
+    }),
+    VitePWA({
+      registerType: 'autoUpdate',
+      manifest: {
+        theme_color: '#f59e0b'
+      },
+      devOptions: {
+        enabled: true
+      }
     })
   ],
   resolve: {
