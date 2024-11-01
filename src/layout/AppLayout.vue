@@ -1,25 +1,17 @@
 <script setup>
 import AppFooter from './AppFooter.vue'
-import AppTopbar from './AppTopbar.vue'
 </script>
 
 <template>
   <div class="layout-wrapper select-none">
-    <!-- <app-topbar></app-topbar> -->
     <div class="layout-cardapio-container">
       <div class="layout-cardapio">
-        <!-- <router-view v-slot="{ Component }">
-                    <transition mode="out-in">
-                        <component :is="Component" />
-                    </transition>
-                </router-view> -->
         <router-view></router-view>
       </div>
       <app-footer></app-footer>
     </div>
     <div class="layout-mask animate-fadein"></div>
   </div>
-  <!-- <Toast /> -->
 </template>
 
 <style lang="scss" scoped>

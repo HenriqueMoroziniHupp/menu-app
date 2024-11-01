@@ -14,12 +14,16 @@ declare module 'vue' {
     copy: typeof import('./src/components/CardProduct copy.vue')['default']
     DeferredContent: typeof import('primevue/deferredcontent')['default']
     FloatingConfigurator: typeof import('./src/components/FloatingConfigurator.vue')['default']
+    IconField: typeof import('primevue/iconfield')['default']
     Image: typeof import('primevue/image')['default']
     ImageComponent: typeof import('./src/components/ImageComponent.vue')['default']
+    InputIcon: typeof import('primevue/inputicon')['default']
+    InputText: typeof import('primevue/inputtext')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ScrollTop: typeof import('primevue/scrolltop')['default']
     SelectButton: typeof import('primevue/selectbutton')['default']
+    Skeleton: typeof import('primevue/skeleton')['default']
   }
   export interface ComponentCustomProperties {
     StyleClass: typeof import('primevue/styleclass')['default']

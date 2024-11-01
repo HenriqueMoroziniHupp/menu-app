@@ -6,10 +6,6 @@ defineProps({
     type: String,
     required: true
   },
-  containerClass: {
-    type: String,
-    default: ''
-  },
   imageClass: {
     type: String,
     default: ''
@@ -26,7 +22,7 @@ const onImageError = () =>
 </script>
 
 <template>
-  <div :class="['image-container', containerClass]">
+  <div class="image-container">
     <img
       :class="['select-none image', imageClass]"
       :src="fallback || imageUrl"
@@ -35,7 +31,7 @@ const onImageError = () =>
       @error="onImageError"
     />
     <Transition>
-      <div class="image-loading loader" v-if="loading"/>
+      <div class="image-loading loader" v-if="loading" />
     </Transition>
   </div>
 </template>
