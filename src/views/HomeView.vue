@@ -23,8 +23,10 @@ const search = ref('')
 const filteredProductsByCategory = computed<IProdByCat[]>(() => {
   return productsByCategory.value.reduce((acc: IProdByCat[], category) => {
     // Filtra os produtos que correspondem à busca
-    const matchingProducts = category.products.filter((product) =>
-      product.name?.toLowerCase().includes(search.value.toLowerCase())
+    const matchingProducts = category.products.filter(
+      (product) =>
+        product.name?.toLowerCase().includes(search.value.toLowerCase()) ||
+        product.description?.toLowerCase().includes(search.value.toLowerCase())
     )
 
     // Se a categoria tiver produtos correspondentes, a adiciona ao acumulador
@@ -95,7 +97,16 @@ const scrollToCategory = (categoryId: any) => {
 <template>
   <div id="parallax" class="parallax-container">
     <template v-if="loaded">
-      <ImageComponent image-class="parallax-image" :image-url="userStore.userData.bannerUrl" />
+      <ImageComponent
+        class="front-image"
+        image-class="parallax-image"
+        :image-url="userStore.userData.bannerUrl"
+      />
+      <ImageComponent
+        class="back-image"
+        image-class="parallax-image"
+        :image-url="userStore.userData.bannerUrl"
+      />
     </template>
     <template v-else>
       <Skeleton width="100%" height="100%"></Skeleton>
@@ -155,12 +166,7 @@ const scrollToCategory = (categoryId: any) => {
   </div>
   <div class="filter z-10 fixed bottom-0 p-2 w-full">
     <IconField iconPosition="left">
-      <InputText
-        type="text"
-        v-model="search"
-        placeholder="Pesquisar..."
-        class="w-full glass"
-      />
+      <InputText type="text" v-model="search" placeholder="Pesquisar..." class="w-full glass" />
       <Transition mode="out-in">
         <InputIcon v-if="!search.length" class="pi pi-search" />
         <InputIcon v-else class="pi pi-times" @click="search = ''" />
@@ -193,13 +199,36 @@ const scrollToCategory = (categoryId: any) => {
     will-change: transform;
   }
 
-  /* Nome do restaurante */
+  @media (min-width: 756px) {
+    .front-image {
+      max-width: 54rem;
+      z-index: 5;
+      position: relative;
+      margin: 0 auto;
+    }
+  }
+
+  .back-image {
+    display: none;
+  }
+
+  @media (min-width: 756px) {
+    .back-image {
+      display: block;
+      position: absolute;
+      top: 0;
+      opacity: 0.85;
+      filter: blur(0.5rem);
+      transform: scale(1.05);
+    }
+  }
+
   .restaurant-name {
     position: absolute;
     bottom: 0;
     margin: 0 0 2.5rem 1.5rem;
     color: white;
-    z-index: 1; /* Fica sobre a imagem */
+    z-index: 10;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   }
 }
@@ -207,7 +236,7 @@ const scrollToCategory = (categoryId: any) => {
 .parallax-container:after {
   content: '';
   position: absolute;
-  z-index: 0;
+  z-index: 5;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -217,7 +246,7 @@ const scrollToCategory = (categoryId: any) => {
 
 .content {
   background: var(--surface-ground);
-  z-index: 1;
+  z-index: 5;
   position: relative;
   padding: 1.2rem 1.2rem 0;
   margin-top: -1.5rem;
@@ -248,7 +277,7 @@ const scrollToCategory = (categoryId: any) => {
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.6);
+  background: var(--glass-background);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
