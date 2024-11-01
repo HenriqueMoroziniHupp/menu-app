@@ -1,8 +1,11 @@
 :root {
-    --surface-ground: var(--p-surface-100);
-    --code-background: var(--p-surface-900);
-    --code-color: var(--p-surface-200);
-    --cardapio-chip-color: var(--p-surface-200);
-    --scrollbar-color: var(--p-surface-300);
-    --scrollbar-color-hover: var(--p-surface-400);
+  --surface-ground: var(--p-surface-100);
+  --code-background: var(--p-surface-900);
+  --code-color: var(--p-surface-200);
+  --cardapio-chip-color: var(--p-surface-200);
+  --scrollbar-color: var(--p-surface-300);
+  --scrollbar-color-hover: var(--p-surface-400);
+  --p-inputtext-focus-border-color: var(--p-surface-50) !important;
+  --p-inputtext-hover-border-color: var(--p-surface-300) !important;
+  --glass-background: rgba(255, 255, 255, 0.6);
 }
