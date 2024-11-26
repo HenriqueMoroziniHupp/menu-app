@@ -7,10 +7,6 @@ const { product } = defineProps<{ product: IProduct }>()
 function formatPrice(price: any) {
   return new Intl.NumberFormat(undefined, { style: 'currency', currency: 'BRL' }).format(price)
 }
-
-function hasPrice(product: IProduct) {
-  return product.priceSingle || product.priceSmall || product.priceMedium || product.priceLarge
-}
 </script>
 
 <template>
@@ -28,26 +24,13 @@ function hasPrice(product: IProduct) {
     </template>
     <template #subtitle v-if="product.description">{{ product.description }} </template>
     <template #content>
-      <template v-if="hasPrice(product)">
-        <Badge
-          v-if="product.priceSingle"
-          :value="`Tamanho Unico: ${formatPrice(product.priceSingle)}`"
-        ></Badge>
-        <div v-else class="flex flex-wrap gap-2">
+      <div class="flex flex-wrap gap-2" v-if="product.prices.length">
           <Badge
-            v-if="product.priceSmall"
-            :value="`Pequeno:  ${formatPrice(product.priceSmall)}`"
-          ></Badge>
-          <Badge
-            v-if="product.priceMedium"
-            :value="`Medio:  ${formatPrice(product.priceMedium)}`"
-          ></Badge>
-          <Badge
-            v-if="product.priceLarge"
-            :value="`Grande:  ${formatPrice(product.priceLarge)}`"
-          ></Badge>
-        </div>
-      </template>
+            v-for="price in product.prices"
+            :key="price.id"
+            :value="`${price.name}: ${formatPrice(price.price)}`"
+          />
+      </div>
       <template v-else>
         <Badge value="Consultar preço"></Badge>
       </template>
