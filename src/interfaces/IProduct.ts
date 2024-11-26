@@ -1,4 +1,5 @@
 import type { ICategory } from './ICategory'
+import type { IPrice } from './IPrice'
 
 export type TProductStatus = 'ACTIVE' | 'OUTOFSTOCK' | 'INACTIVE'
 
@@ -11,10 +12,7 @@ export interface IProduct {
   category?: ICategory
   imageUrl?: string
   image?: File
-  priceSmall?: number
-  priceMedium?: number
-  priceLarge?: number
-  priceSingle?: number
+  prices: IPrice[]
 }
 
 export interface IProdByCat {
