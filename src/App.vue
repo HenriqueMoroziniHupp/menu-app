@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 
-const isDesktop = () => {
+const userAgent = () => {
   const userAgent = navigator.userAgent.toLowerCase()
 
-  return !/android|webos|iphone|ipad|ipod|macintosh|blackberry|iemobile|opera mini/i.test(userAgent)
+  if (/android/i.test(userAgent)) return 'android';
+  if (/iphone|ipad|ipod|macintosh/i.test(userAgent)) return 'apple';
+
+  return 'desktop';
 }
 
-if (isDesktop()) document.documentElement.classList.add('desktop')
+document.documentElement.classList.add(userAgent())
 
 const applyPreferenceTheme = () => {
   const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
