@@ -1,10 +1,18 @@
 <script setup lang="ts">
 import type { IProduct } from '@/interfaces/IProduct'
-import productsAPI from '@/service/ProductsService'
-import { useUserStore } from '@/stores/userStore'
 import { computed, onMounted, onUnmounted, ref, shallowRef } from 'vue'
 import { useHead } from '@unhead/vue'
 import ImageComponent from '@/components/ImageComponent.vue'
+import appAPI from '@/service/App'
+
+type TStatus = 'PENDING' | 'ACTIVE' | 'BLOCKED' | 'TERMINATED' | 'TRIAL'
+
+interface IUser {
+  name: string
+  bannerUrl: string
+  description?: string
+  status: TStatus
+}
 
 interface IProdByCat {
   id: number
@@ -15,7 +23,7 @@ interface IProdByCat {
 
 const __categories = shallowRef<Element>()
 const isFixed = shallowRef(false)
-const userStore = useUserStore()
+const userData = shallowRef({} as IUser)
 const loaded = ref(false)
 const productsByCategory = shallowRef<IProdByCat[]>([])
 const search = ref('')
@@ -46,13 +54,21 @@ const filteredProductsByCategory = computed<IProdByCat[]>(() => {
 
 onMounted(async () => {
   try {
-    await userStore.fetchData()
-    useHead({
-      title: userStore.userData.name
-    })
+    const { hostname } = window.location
+    const slug = hostname.split('.')[0]
 
-    const response = await productsAPI.getCategoriesWithProducts(userStore.slug)
-    productsByCategory.value = response.data as IProdByCat[]
+    const response = await appAPI.getApp(slug)
+    productsByCategory.value = response.data.categories as IProdByCat[]
+    userData.value = {
+      name: response.data?.name,
+      description: response.data?.description,
+      bannerUrl: response.data?.bannerUrl,
+      status: response.data?.status as TStatus
+    }
+
+    useHead({
+      title: userData.value.name
+    })
     loaded.value = true
   } catch (error) {
     console.error(error)
@@ -100,20 +116,20 @@ const scrollToCategory = (categoryId: any) => {
       <ImageComponent
         class="front-image"
         image-class="parallax-image"
-        :image-url="userStore.userData.bannerUrl"
+        :image-url="userData.bannerUrl"
       />
       <ImageComponent
         class="back-image"
         image-class="parallax-image"
-        :image-url="userStore.userData.bannerUrl"
+        :image-url="userData.bannerUrl"
       />
     </template>
     <template v-else>
       <Skeleton width="100%" height="100%"></Skeleton>
     </template>
     <div class="restaurant-name">
-      <p class="text-3xl">{{ userStore.userData.name }}</p>
-      <p class="text-sm">{{ userStore.userData.description }}</p>
+      <p class="text-3xl">{{ userData.name }}</p>
+      <p class="text-sm">{{ userData.description }}</p>
     </div>
   </div>
 
