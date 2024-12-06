@@ -199,11 +199,11 @@ const scrollToCategory = (categoryId: any) => {
 <style lang="scss" scoped>
 .parallax-container {
   position: relative;
+  height: 40svh;
+  max-height: 40svh;
   overflow: hidden;
 
   :deep(.parallax-image) {
-    height: 40vh;
-    max-height: 40vh;
     overflow: hidden;
     object-fit: cover;
     transform: translateZ(0);
