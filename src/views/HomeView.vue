@@ -200,9 +200,10 @@ const scrollToCategory = (categoryId: any) => {
 .parallax-container {
   position: relative;
   height: 40vh;
+  max-height: 40vh;
   overflow: hidden;
 
-  .parallax-image {
+  :deep(.parallax-image) {
     top: 0;
     left: 0;
     width: 100%;
