@@ -205,7 +205,6 @@ const scrollToCategory = (categoryId: any) => {
 
   :deep(.parallax-image) {
     overflow: hidden;
-    object-fit: cover;
     transform: translateZ(0);
     will-change: transform;
   }
