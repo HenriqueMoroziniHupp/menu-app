@@ -199,9 +199,11 @@ const scrollToCategory = (categoryId: any) => {
 <style lang="scss" scoped>
 .parallax-container {
   position: relative;
-  height: 40svh;
+  // height: 40svh; for vh bug
   max-height: 40svh;
   overflow: hidden;
+  aspect-ratio: 16/10;  // for vh bug
+  width: 100%;  // for vh bug
 
   :deep(.parallax-image) {
     overflow: hidden;
@@ -215,6 +217,7 @@ const scrollToCategory = (categoryId: any) => {
       z-index: 5;
       position: relative;
       margin: 0 auto;
+      height: auto; // for vh bug
     }
   }
 
