@@ -206,7 +206,6 @@ const scrollToCategory = (categoryId: any) => {
   width: 100%;  // for vh bug
 
   :deep(.parallax-image) {
-    transform: translateY(0);
     will-change: transform;
   }
 
