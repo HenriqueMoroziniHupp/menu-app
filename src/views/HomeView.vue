@@ -205,11 +205,11 @@ const scrollToCategory = (categoryId: any) => {
   aspect-ratio: 16/10;  // for vh bug
   width: 100%;  // for vh bug
 
-  :deep(.parallax-image) {
-    overflow: hidden;
-    transform: translateZ(0);
-    will-change: transform;
-  }
+  // :deep(.parallax-image) {
+  //   overflow: hidden;
+  //   transform: translateZ(0);
+  //   will-change: transform;
+  // }
 
   @media (min-width: 756px) {
     .front-image {
