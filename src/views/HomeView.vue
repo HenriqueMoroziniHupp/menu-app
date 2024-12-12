@@ -74,7 +74,7 @@ onMounted(async () => {
     console.error(error)
   }
 
-  window.addEventListener('scroll', handlerListener)
+  window.addEventListener('scroll', () => requestAnimationFrame(handlerListener))
 })
 
 onUnmounted(() => {
@@ -140,7 +140,7 @@ const scrollToCategory = (categoryId: any) => {
         ref="__categories"
         id="carousel"
         class="categories sticky top-0 overflow-x-auto whitespace-nowrap py-2 snap-mandatory snap-x"
-        :class="{ categories__shadow: isFixed }"
+        :class="{ 'categories__shadow': isFixed }"
       >
         <template v-for="category in filteredProductsByCategory" :key="category.id">
           <Button
@@ -268,6 +268,12 @@ const scrollToCategory = (categoryId: any) => {
     z-index: 2;
     background: var(--surface-ground);
     margin: 0 -1.2rem;
+
+    &__shadow {
+      box-shadow:
+        0 4px 6px -1px rgb(0 0 0 / 0.1),
+        0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
 
     .p-button:nth-child(1) {
       margin-left: 0.5rem;
