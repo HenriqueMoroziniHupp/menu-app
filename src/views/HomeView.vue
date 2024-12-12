@@ -1,10 +1,18 @@
 <script setup lang="ts">
 import type { IProduct } from '@/interfaces/IProduct'
-import productsAPI from '@/service/ProductsService'
-import { useUserStore } from '@/stores/userStore'
 import { computed, onMounted, onUnmounted, ref, shallowRef } from 'vue'
 import { useHead } from '@unhead/vue'
 import ImageComponent from '@/components/ImageComponent.vue'
+import appAPI from '@/service/App'
+
+type TStatus = 'PENDING' | 'ACTIVE' | 'BLOCKED' | 'TERMINATED' | 'TRIAL'
+
+interface IUser {
+  name: string
+  bannerUrl: string
+  description?: string
+  status: TStatus
+}
 
 interface IProdByCat {
   id: number
@@ -15,7 +23,7 @@ interface IProdByCat {
 
 const __categories = shallowRef<Element>()
 const isFixed = shallowRef(false)
-const userStore = useUserStore()
+const userData = shallowRef({} as IUser)
 const loaded = ref(false)
 const productsByCategory = shallowRef<IProdByCat[]>([])
 const search = ref('')
@@ -46,19 +54,27 @@ const filteredProductsByCategory = computed<IProdByCat[]>(() => {
 
 onMounted(async () => {
   try {
-    await userStore.fetchData()
-    useHead({
-      title: userStore.userData.name
-    })
+    const { hostname } = window.location
+    const slug = hostname.split('.')[0]
 
-    const response = await productsAPI.getCategoriesWithProducts(userStore.slug)
-    productsByCategory.value = response.data as IProdByCat[]
+    const response = await appAPI.getApp(slug)
+    productsByCategory.value = response.data.categories as IProdByCat[]
+    userData.value = {
+      name: response.data?.name,
+      description: response.data?.description,
+      bannerUrl: response.data?.bannerUrl,
+      status: response.data?.status as TStatus
+    }
+
+    useHead({
+      title: userData.value.name
+    })
     loaded.value = true
   } catch (error) {
     console.error(error)
   }
 
-  window.addEventListener('scroll', handlerListener)
+  window.addEventListener('scroll', () => requestAnimationFrame(handlerListener))
 })
 
 onUnmounted(() => {
@@ -100,20 +116,20 @@ const scrollToCategory = (categoryId: any) => {
       <ImageComponent
         class="front-image"
         image-class="parallax-image"
-        :image-url="userStore.userData.bannerUrl"
+        :image-url="userData.bannerUrl"
       />
       <ImageComponent
         class="back-image"
         image-class="parallax-image"
-        :image-url="userStore.userData.bannerUrl"
+        :image-url="userData.bannerUrl"
       />
     </template>
     <template v-else>
       <Skeleton width="100%" height="100%"></Skeleton>
     </template>
     <div class="restaurant-name">
-      <p class="text-3xl">{{ userStore.userData.name }}</p>
-      <p class="text-sm">{{ userStore.userData.description }}</p>
+      <p class="text-3xl">{{ userData.name }}</p>
+      <p class="text-sm">{{ userData.description }}</p>
     </div>
   </div>
 
@@ -183,21 +199,11 @@ const scrollToCategory = (categoryId: any) => {
 <style lang="scss" scoped>
 .parallax-container {
   position: relative;
-  height: 40vh;
+  // height: 40svh; for vh bug
+  max-height: 40svh;
   overflow: hidden;
-
-  .parallax-image {
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    object-fit: cover;
-    transform: translateZ(0);
-    top: 0;
-    left: 0;
-    will-change: transform;
-  }
+  aspect-ratio: 16/10; // for vh bug
+  width: 100%; // for vh bug
 
   @media (min-width: 756px) {
     .front-image {
@@ -255,6 +261,12 @@ const scrollToCategory = (categoryId: any) => {
     z-index: 2;
     background: var(--surface-ground);
     margin: 0 -1.2rem;
+
+    &__shadow {
+      box-shadow:
+        0 4px 6px -1px rgb(0 0 0 / 0.1),
+        0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
 
     .p-button:nth-child(1) {
       margin-left: 0.5rem;
