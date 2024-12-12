@@ -140,7 +140,7 @@ const scrollToCategory = (categoryId: any) => {
         ref="__categories"
         id="carousel"
         class="categories sticky top-0 overflow-x-auto whitespace-nowrap py-2 snap-mandatory snap-x"
-        :class="{ 'categories__shadow': isFixed }"
+        :class="{ categories__shadow: isFixed }"
       >
         <template v-for="category in filteredProductsByCategory" :key="category.id">
           <Button
@@ -202,8 +202,8 @@ const scrollToCategory = (categoryId: any) => {
   // height: 40svh; for vh bug
   max-height: 40svh;
   overflow: hidden;
-  aspect-ratio: 16/10;  // for vh bug
-  width: 100%;  // for vh bug
+  aspect-ratio: 16/10; // for vh bug
+  width: 100%; // for vh bug
 
   @media (min-width: 756px) {
     .front-image {
@@ -211,7 +211,6 @@ const scrollToCategory = (categoryId: any) => {
       z-index: 5;
       position: relative;
       margin: 0 auto;
-      height: auto; // for vh bug
     }
   }
 
