@@ -205,10 +205,6 @@ const scrollToCategory = (categoryId: any) => {
   aspect-ratio: 16/10;  // for vh bug
   width: 100%;  // for vh bug
 
-  :deep(.parallax-image) {
-    will-change: transform;
-  }
-
   @media (min-width: 756px) {
     .front-image {
       max-width: 54rem;
